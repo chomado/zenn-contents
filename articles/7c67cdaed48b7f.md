@@ -6,7 +6,7 @@ topics: [CSharp, Azure, Bot, BotFramework, VisualStudio]
 published: true
 ---
 
-![](https://storage.googleapis.com/zenn-user-upload/eao06tepir342vqj6wgw09vxtiij)
+![](https://storage.googleapis.com/zenn-user-upload/ce7d4ce66d17-20211126.png)
 
 
 :::message
@@ -105,7 +105,12 @@ Bot URL (エンドポイント) に `http://localhost:3978/api/messages` を入�
 
 ## 3-5: Azure Cognitive Service for Language に繋げる準備：接続情報を記述
 
-プロジェクトの設定ファイル `appsettings.json` に Azure Cognitive Service for Language の設定を書きます。
+User Secrets に Azure Cognitive Service for Language の設定を書きます。
+
+プロジェクト右クリックから `Manage User Secrets`
+で、空の json ファイルが生えてきます。
+
+![](https://storage.googleapis.com/zenn-user-upload/0e3175281220-20211126.jpg)
 
 **Language Studio** ([https://language.azure.com/](https://language.azure.com/))  の デプロイ画面の `Get prediction URL` から以下の部分の値を入れる
 
@@ -113,7 +118,7 @@ Bot URL (エンドポイント) に `http://localhost:3978/api/messages` を入�
 
 ![](https://storage.googleapis.com/zenn-user-upload/45267c969052-20211126.jpg)
 
-`appsettings.json` サンプル
+`secrets.json` サンプル
 
 ````json
 {
@@ -123,7 +128,7 @@ Bot URL (エンドポイント) に `http://localhost:3978/api/messages` を入�
 }
 ````
 
-（今回はサンプルなので構成ファイルに直書きしますが、本番では Azure `App Service` の `アプリケーション設定` に書くほうが安全です）
+（これはローカルでの動作用なので、Azure にデプロイ後は `App Service` の `アプリケーション設定` に同じものを書きます (後述) ）
 
 ## 3-6: プロジェクトに Azure Cognitive Service for Language の SDK 入れる
 
@@ -265,11 +270,11 @@ Visual Studio のプロジェクトの右クリックメニューから「発行
 -> (必要によっては Azure のサブスクリプションと紐づいてる MS アカウントでログインしてね)
 -> 該当する、事前に作っておいた App Service を選ぶ 
 
-
+![](https://storage.googleapis.com/zenn-user-upload/4257db5ee6fc-20211126.jpg)
 
 publish (発行) しましょう
 
-![](https://storage.googleapis.com/zenn-user-upload/4257db5ee6fc-20211126.jpg)
+![](https://storage.googleapis.com/zenn-user-upload/20375c11a108-20211126.jpg)
 
 # 4: Teams と繋げる
 
@@ -390,64 +395,84 @@ Web App (App Service) のリソースに戻ります。
 
 設定した後は必ず `保存` を押しましょう。(私はいつもこれを忘れて「あれ～？更新されてないぞ」となる)
 
-## 4-3: Teams bot 設定ファイル manifest.json
+![](https://storage.googleapis.com/zenn-user-upload/1fca614e11ac-20211126.jpg)
 
-Teams bot 設定ファイル `manifest.json` を書きます。
+## 4-4: Cognitive Service for Language の接続情報を教える
+
+`Visual Studio 2022` のほうの `secrets.json` に書いてた、API キー文字列的な 3 つの情報を
+デプロイ先の Azure にも教えてあげます。
+
+![](https://storage.googleapis.com/zenn-user-upload/1c3de7cbb9c0-20211126.jpg)
+
+＃|名前|値
+---|---|---
+1|`Endpoint`|`https://japaneast.api.cognitive.microsoft.com/`
+2|`ProjectName`|プロジェクトの名前（私の場合 qna-211125-software-download-faq）
+3|`Key`|キー文字列
+
+
+![](https://storage.googleapis.com/zenn-user-upload/5acd7ffbc010-20211126.jpg)
+
+忘れず「保存」をします
+
+## 4-5: Azure Bot にエンドポイントを教える
+
+Web App (App Service) のリソースの `概要` から
+URL をコピーしておく。
+
+![](https://storage.googleapis.com/zenn-user-upload/240133a45349-20211126.jpg)
+
+
+またリソースグループに戻り、
+リソース一覧から `Azure Bot` をクリック。
+（私の場合 `bot-211126-faqbot` って名前のリソース）
+
+`構成` -> `メッセージング エンドポイント`
+で、さっきの URL に `api/messages` を追加したものを入れて
+「`適用`」
+
+![](https://storage.googleapis.com/zenn-user-upload/26a95b07fa2f-20211126.jpg)
+
+## 4-6: Web chat でテスト
+
+`Azure Bot` の左のメニュー `Web チャットでテスト` から
+テストができます。
+Teams で動かす前にこちらでちゃんと動いているかの確認をしましょう
+
+![](https://storage.googleapis.com/zenn-user-upload/5ea21b6c3a07-20211126.png)
+
+## 4-7: Azure Bot のチャンネルの構成
+
+`Azure Bot` の左のメニューの `チャンネル` から `Microsoft Teams` を追加しましょう。
+
+![](https://storage.googleapis.com/zenn-user-upload/db80767c1e30-20211126.png)
+
+![](https://storage.googleapis.com/zenn-user-upload/a06e9027232b-20211126.png)
+
+
+## 4-8: Teams で動かす
+
+![](https://storage.googleapis.com/zenn-user-upload/fc110bc23161-20211126.jpg)
+
+![](https://storage.googleapis.com/zenn-user-upload/02c38cd1786f-20211126.png)
+
+動いた！！！！！！！！！！！！
+
+# 5. 他の人の環境でも動かしたい
+
+他の人の環境でも動かしたい場合、もう少し手順が必要です。（配布用の zip を作らないといけない）
+
+## 5-1: 設定ファイル manifest.json
+
+まず　Teams bot 設定ファイル `manifest.json` を書きます。
 
 「アプリ名は何」「作者名」などのアプリの設定や
 アプリの接続情報「Microsoft App ID/ Secret」(Azure からコピペしてくるやつ)などを
 json で記述する、設定ファイルです。
 
-（詳細：[公式ドキュメント『Reference: Manifest schema for Microsoft Teams』](https://docs.microsoft.com/en-us/microsoftteams/platform/resources/schema/manifest-schema?WT.mc_id=docs-blog-machiy) ）
+詳細：[公式ドキュメント『Reference: Manifest schema for Microsoft Teams』](https://docs.microsoft.com/en-us/microsoftteams/platform/resources/schema/manifest-schema?WT.mc_id=docs-blog-machiy) 
 
-色々書けるのですが、今回は最小の要素で構成されたものでいきましょう。
-
-こちらを適当なテキストエディタにコピペして `manifest.json` という名前で保存してください。
-
-```json
-{
-    "$schema": " https://developer.microsoft.com/en-us/json-schemas/teams/v1.3/MicrosoftTeams.schema.json",
-    "manifestVersion": "1.3",
-    "version": "1.0.0",
-    "id": "ボットチャンネル登録にあるボットのAppId",
-    "packageName": "com.example.mysamplebot",
-    "developer": {
-        "name": "開発者名",
-        "websiteUrl": "https://example.com/",
-        "privacyUrl": "https://example.com/privacy",
-        "termsOfUseUrl": "https://example.com/app-tos"
-    },
-    "name": {
-        "short": "FAQbot",
-        "full": "FAQ-bot"
-    },
-    "description": {
-        "short": "サンプルのボット",
-        "full": "サンプルのボットです。"
-    },
-    "icons": {
-        "outline": "icon32x32.png",
-        "color": "icon192x192.png"
-    },
-    "accentColor": "#ff0000",
-    "bots": [
-        {
-            "botId": "ボットチャンネル登録にあるボットのAppId",
-            "needsChannelSelector": false,
-            "isNotificationOnly": false,
-            "scopes": [
-                "personal", "team", "groupchat"
-            ],
-            "supportsFiles": false,
-            "commandLists": []
-        }
-    ]
-}
-```
-
-こちらに先ほどコピーしておいた Microsoft App ID をコピペします。2 か所あります。
-
-## 4-4: bot アイコンをつくる
+## 5-2: bot アイコンをつくる
 
 アイコン用に 32 x 32 と 192 x 192 の画像を
 それぞれ `icon32x32.png`, `icon192x192.png` などという名前で保存しましょう。
@@ -457,14 +482,14 @@ json で記述する、設定ファイルです。
 
 [https://github.com/chomado/210219_FAQbot-on-Teams/tree/main/teams-settings](https://github.com/chomado/210219_FAQbot-on-Teams/tree/main/teams-settings)
 
-## 4-5: zip で固める
+## 5-3: zip で固める
 
 エクスプローラーで manifest.json, icon32x32.png, icon192x192.png を選択して右クリックから圧縮します。
 
 ![](https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.ap-northeast-1.amazonaws.com%2F0%2F24609%2F5adae526-9d29-59ac-9482-b9254c5c0d06.png?ixlib=rb-1.2.2&auto=format&gif-q=60&q=75&w=1400&fit=max&s=0f9e496cb65c269159e888f3afac3e95)
 （図：私が過去書いた記事『[【第4/5】Teams bot をローカル (Visual Studio 2022) で開発し、Azure で無料で動かす【その４：Teams に繋げてデバッグ編】](https://qiita.com/chomado/items/23c66a975e21265d99ae#4-3-teams-%E3%81%AB%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%82%A2%E3%83%97%E3%83%AA%E3%81%A8%E3%81%97%E3%81%A6%E7%99%BB%E9%8C%B2)』）
 
-## 4-6: Teams にカスタムアプリとして登録
+## 5-4 Teams にカスタムアプリとして登録
 
 さて、いよいよ Teams での作業となります。
 Teams を開いて左下の「カスタムアプリをアップロード」をクリックします。
@@ -480,9 +505,6 @@ Teams を開いて左下の「カスタムアプリをアップロード」を�
 
 ![](https://storage.googleapis.com/zenn-user-upload/ae2p13yvkgwtpnnu5o26qv13gsl8)
 
-コードは全て GitHub に公開しました
-
-https://github.com/chomado/210219_FAQbot-on-Teams
 
 読んで頂きましてありがとうございました😊
 
