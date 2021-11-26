@@ -74,6 +74,10 @@ Echo Bot (Bot Framework v4 - .NET Core 3.1) を選択して作ります。
 
 「`Create`」(作成) を押します。
 
+NuGet Package Manager から
+`Microsoft.Bot.Builder.Integration.AspNet.Core` を
+更新しておきます。
+
 ## 3-3: 実行してみる
 
 プロジェクトが開くので、取りあえずなにもいじらずデバッグ実行してみます。(`F5` 押して実行)
