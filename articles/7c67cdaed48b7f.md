@@ -8,24 +8,48 @@ published: true
 
 ![](https://storage.googleapis.com/zenn-user-upload/eao06tepir342vqj6wgw09vxtiij)
 
-[前編の記事](https://zenn.dev/chomado/articles/8ab50af04b52cc) では、QnA Maker でのナレッジベース作成まで完了しましたね。
+
+:::message
+注意書き）2021/11/26
+この記事はもともと 2021 年 2 月に書かれたものですが、この 9 カ月間に色々アップデートがあったので、諸々 書き直しました！　差分の気になる方は GitHub の commit log に。(この記事は git 管理されています)
+2021 年 11 月末現在で最新の情報を書いています。
+:::
+
+[前編の記事](https://zenn.dev/chomado/articles/8ab50af04b52cc) では、Azure Cognitive Service for Language でのナレッジベース作成まで完了しましたね。
 この後半の記事ではクライアント (bot) のコードをガリガリ書いていきます。
 
 0. ~~事前準備~~
 1. ~~Azure で bot ホスト先を用意~~
-2. ~~QnA Maker でナレッジベースを作る~~ `← ここまで完了`
+2. ~~Azure Cognitive Service for Language の question answering 機能でナレッジベースを作る~~ `← ここまで完了`
 3. bot クライアント開発 (Visual Studio で) `← ここから`
 4. Teams と繋げる
 
+# 参考ドキュメント
+
+公式ドキュメント：『[クイックスタート: 質問応答](https://docs.microsoft.com/ja-jp/azure/cognitive-services/language-service/question-answering/quickstart/sdk?pivots=programming-language-csharp&WT.mc_id=spatial-8948-machiy)』
+
 # 3: bot クライアント開発
+
+Microsoft 公式が用意してくれている、Botframework のエコー bot テンプレートに手を加える形で進めていきましょう。
+
+
+:::message
+エコー bot は、
+ユーザの入力した文字列をそのまま返してくれる bot で、
+
+ユーザの入力をきちんと取れて、また、ちゃんとチャットを返してくれる、ということで、チャットボットのハローワールド的なものによく使われる題材です
+:::
+
+ちなみにソースコードはすべて GitHub に上げてあります
+https://github.com/chomado/211125-FAQBot
 
 ## 3-1: Visual Studio に Botframework テンプレート
 
-Visual Studio 2019 の拡張機能から Bot Framework v4 SDK Templates for Visual Studio を入れます。詳しく手順を示します。
+Visual Studio 2022 の拡張機能から Bot Framework v4 SDK Templates for Visual Studio を入れます。詳しく手順を示します。
 
-まず VS2019 を開いて、「Continue without code」をクリック。（私は VS の言語を英語にしているので、日本語にしている方は適宜読み替えてください）
+まず VS2022 を開いて、「Continue without code」をクリック。（私は VS の言語を英語にしているので、日本語にしている方は適宜読み替えてください）
 
-![](https://storage.googleapis.com/zenn-user-upload/dx2khs0qw0woz7wpdd9nxjev81sv)
+![](https://storage.googleapis.com/zenn-user-upload/a15f1a7020fa-20211126.png)
 
 メニューバーから `Extentions` (拡張機能) → `Manage Extentions`
 
@@ -35,16 +59,16 @@ Visual Studio 2019 の拡張機能から Bot Framework v4 SDK Templates for Visu
 
 
 
-クエリが走り、一番 上の「`Bot Framework v4 SDK Templates for Visual Studio`」を `Download` したら、VS2019 を再起動します。
+クエリが走り、一番 上の「`Bot Framework v4 SDK Templates for Visual Studio`」を `Download` したら、VS2022 を再起動します。
 
 ## 3-2: プロジェクト作成
 
-Visual Studio 2019 の `Create a new project` (新規作成) から 
+Visual Studio 2022 の `Create a new project` (新規作成) から 
 Echo Bot (Bot Framework v4 - .NET Core 3.1) を選択して作ります。
 
 ![](https://storage.googleapis.com/zenn-user-upload/gn2jwp9maixwotack1ylslxxqmts)
 
-プロジェクト名は任意で。（私は `MyQnABot` にしました）
+プロジェクト名は任意で。
 
 ![](https://storage.googleapis.com/zenn-user-upload/ty89lytpdibvb4dklaactgn2g1ba)
 
@@ -79,146 +103,118 @@ Bot URL (エンドポイント) に `http://localhost:3978/api/messages` を入�
 開いたとき、最初は `Hello and welcome!` の定型文だけ返してきていますが、
 こちらが何か言うと、その送った文字列そのままを返す、という動きをしています。（エコー bot）
 
-## 3-5: QnA Maker に繋げる準備：接続情報を記述
+## 3-5: Azure Cognitive Service for Language に繋げる準備：接続情報を記述
 
-プロジェクトの設定ファイル `appsettings.json` に QnA Maker の設定を書きます。
+プロジェクトの設定ファイル `appsettings.json` に Azure Cognitive Service for Language の設定を書きます。
 
-QnA Maker の Publish 画面にある以下の *** で囲んだ部分の値を入れる
+**Language Studio** ([https://language.azure.com/](https://language.azure.com/))  の デプロイ画面の `Get prediction URL` から以下の部分の値を入れる
 
-```
-POST /knowledgebases/***00000000-0000-0000-0000-00000000000***/generateAnswer
-Host: ***https://qna-m365kaota.azurewebsites.net/qnamaker***
-Authorization: EndpointKey ***11111111-1111-1111-1111-11111111111***
-Content-Type: application/json
-{"question":"<Your question>"}
-```
+![](https://storage.googleapis.com/zenn-user-upload/f9d725786a24-20211126.png)
 
-![](https://storage.googleapis.com/zenn-user-upload/4htrf9uluqlmmfossclf98192x7k)
+![](https://storage.googleapis.com/zenn-user-upload/45267c969052-20211126.jpg)
 
 `appsettings.json` サンプル
 
 ````json
 {
-  "MicrosoftAppId": "",
-  "MicrosoftAppPassword": "",
-  "QnAKnowledgebaseId": "00000000-0000-0000-0000-00000000000",
-  "QnAEndpointKey": "11111111-1111-1111-1111-11111111111",
-  "QnAEndpointHostName": "https://自分でつけた名前.azurewebsites.net/qnamaker"
+  "Endpoint": "https://japaneast.api.cognitive.microsoft.com/",
+  "ProjectName": "自分が付けた名前",
+  "Key": "キー文字列"
 }
 ````
 
-
 （今回はサンプルなので構成ファイルに直書きしますが、本番では Azure `App Service` の `アプリケーション設定` に書くほうが安全です）
 
-## 3-6: プロジェクトに QnA Maker の SDK 入れる
+## 3-6: プロジェクトに Azure Cognitive Service for Language の SDK 入れる
 
-プロジェクトに `Microsoft.Bot.Builder.AI.QnA` を NuGet (パッケージマネージャー) から入れます。詳しい方法を以下に書きます。
+プロジェクトに `Azure.AI.Language.QuestionAnswering` を NuGet (パッケージマネージャー) から入れます。詳しい方法を以下に書きます。
 
 プロジェクト右クリックで「`Manage NuGet Packages`」
 
 ![](https://storage.googleapis.com/zenn-user-upload/z76lxcenpy9o6cxgn6vohtot23kp)
 
-`Browse` タブの検索バー `Microsoft.Bot.Builder.AI.QnA` 入れて出てきたパッケージをインストールします。
+`Browse` タブの検索バー `Azure.AI.Language.QuestionAnswering` 入れて出てきたパッケージをインストールします。
 
-![](https://storage.googleapis.com/zenn-user-upload/sqttgrk2fbbh6tq7birnec16c8ga)
+![](https://storage.googleapis.com/zenn-user-upload/62ec01d7b451-20211126.png)
 
 ## 3-7: bot のコードを書いていく
 
-### 3-7-1: Startup.cs
-
-Bot から `QnA Maker` に接続するために `HttpClient` が必要なので
-`Startup.cs` に `HttpClient` を使うための
-下準備のコード `services.AddHttpClient();` を追加します
-
-```csharp
-public void ConfigureServices(IServiceCollection services)
-        {
-            // Http Client を使うため
-            services.AddHttpClient();
-```
-### 3-7-2: EchoBot.cs: QnA Maker を呼び出し
+### 3-7-1: EchoBot.cs: Azure Cognitive Service for Language を呼び出し
 
 Bots フォルダの下の `EchoBot.cs` に bot のクラスがあります。
 
 ここの `OnMessageActivityAsync` メソッドが
 ユーザーから話しかけられた時に呼ばれるメソッドになります。
 
-なのでここで `QnA Maker` を呼び出せば QA bot が作れます。
+なのでここで `Azure Cognitive Service for Language` を呼び出せば QA bot が作れます。
 
 まず、必要なものを EchoBot で使えるようにしましょう。
 
-コンストラクタを作って ASP.NET Core から必要なものを渡してもらいます。
+:::message
+この `3-7-1` セクションでやる分のコード書き書きについては
+こちらのコミットにまとめています
+https://github.com/chomado/211125-FAQBot/commit/c49082b32f397fd5d5bd8e57f193f8f22a9ab115
+(`3-6` でやった NuGet package 追加のぶんも含んでる)
+:::
 
-今回は QnA Maker への接続情報と HttpClient を作るための IHttpClientFactory を受け取ります。
-
-まず using を追加します
+`EchoBot.cs` 、まず using を追加します。(追加分だけじゃなくもともと書いてたやつも一緒にここに書きますね (コピペフレンドリー) )
 
 ```csharp
+using Azure;
+using Azure.AI.Language.QuestionAnswering;
+using Microsoft.Bot.Builder;
+using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
-using System.Net.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 ```
 
 次にコンストラクタを書いていきます
 
 ```csharp
-private readonly IConfiguration _configuration;
-private readonly IHttpClientFactory _httpClientFactory;
+private readonly IConfiguration configuration;
 
-public EchoBot(IConfiguration configuration, IHttpClientFactory httpClientFactory)
+public EchoBot(IConfiguration configuration)
 {
-   _configuration = configuration;
-   _httpClientFactory = httpClientFactory;
+    this.configuration = configuration;
 }
 ```
 次に、`OnMessageActivityAsync` メソッドを置き換えていきます。
-足りない using は適宜インテリセンスで追加していってください
-
-
-![](https://storage.googleapis.com/zenn-user-upload/i8kbp8f2pkik8k5hg5zkck26g9tx)
 
 
 ```csharp
 // ユーザーから話しかけられた時に呼ばれるメソッド。
-// なのでここで QnA Maker を呼び出す
+// なのでここで Azure Cognitive Service for Language を呼び出す
 protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
 {
-    // QnA Maker に接続するためのクライアントを作る
-    var qnaMaker = new QnAMaker(new QnAMakerEndpoint
-        {
-            // appsetting.json に書いた設定項目 
-            KnowledgeBaseId = _configuration["QnAKnowledgebaseId"],
-            EndpointKey = _configuration["QnAEndpointKey"],
-            Host = _configuration["QnAEndpointHostName"]
-        }, 
-        options: null,
-        httpClient: _httpClientFactory.CreateClient()
-    );
+    // Azure Cognitive Service for Language に接続するための情報
+    var endpoint = new Uri(configuration["Endpoint"]);
+    var credential = new AzureKeyCredential(configuration["Key"]);
+    var projectName = configuration["ProjectName"];
+    var deploymentName = "production";
+    
+    // 上の接続情報を使い、
+    // Azure Cognitive Service for Language に接続するためのクライアントを作る
+    var client = new QuestionAnsweringClient(endpoint, credential);
+    var project = new QuestionAnsweringProject(projectName, deploymentName);
 
-    // QnA Maker から一番マッチした質問の回答を受け取る
-    var options = new QnAMakerOptions { Top = 1 };
+    // もし必要ならデバッグ用にユーザの入力のオウム返しもできます
+    /* await turnContext.SendActivityAsync(
+        MessageFactory.Text(text: $"質問は『{turnContext.Activity.Text}』だね！")
+    ); */
 
-    // デバッグ用にオウム返し
-    await turnContext.SendActivityAsync(
-        MessageFactory.Text(text: $"(*ﾟ▽ﾟ* っ)З 質問は『{turnContext.Activity.Text}』だね！")
-    );
+    // Azure Cognitive Service for Language からのレスポンスを取得
+    Response<AnswersResult> response = await client.GetAnswersAsync(turnContext.Activity.Text, project);
 
-    var response = await qnaMaker.GetAnswersAsync(turnContext, options);
+    // bot の返答文を作る。
+    // 今回は Azure Cognitive Service for Language からのレスポンスの回答部分をそのまま入れる
+    var replyText = response.Value.Answers.First().Answer;
 
-    // 回答が存在したら応答する
-    if (response != null && response.Length > 0)
-    {
-        await turnContext.SendActivityAsync(
-                activity: MessageFactory.Text(response[0].Answer),
-                cancellationToken: cancellationToken
-            );
-    }
-    else
-    {
-        await turnContext.SendActivityAsync(
-                activity: MessageFactory.Text("質問に対する回答が見つかりませんでした"),
-                cancellationToken: cancellationToken
-            );
-    }
+    // bot に喋ってもらう
+    await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
 }
 ```
 
@@ -236,9 +232,15 @@ Windows の 32 bit 版と 64 bit 版って何？
 Office のインストールについてもっと教えて
 ```
 
+学習のために、ブレイクポイントを張って
+レスポンスの中身を見てみるのも良いですね
+
+https://twitter.com/chomado/status/1463831754125418497
+
 ### 3-7-3: EchoBot.cs: 最初のメッセージを編集
 
-EchoBot クラスの `OnMembersAddedAsync` でメンバーが追加されたときのメッセージがあるので、ここを日本語にしておきましょう。
+EchoBot クラスの `OnMembersAddedAsync` でメンバーが追加されたときのメッセージ (デフォルトでは `var welcomeText = "Hello and welcome!";`) があるので、
+ここを日本語にしておきましょう。
 
 ```csharp
 var welcomeText = "(*ﾟ▽ﾟ* っ)З こんにちは！何でも聞いてね";
@@ -253,38 +255,140 @@ Visual Studio のプロジェクトの右クリックメニューから「発行
 
 ![](https://storage.googleapis.com/zenn-user-upload/6xu6x7v0pnpey0t2yhsvd1xyftxw)
 
-事前に作っておいた App Service を選びます。
+どこにデプロイしたいのか聞かれるダイアログが出るので
+ポチポチしていきます。
 
-![](https://storage.googleapis.com/zenn-user-upload/8fxb3o4ztzefdx6sjlfdce7ful9a)
+![](https://storage.googleapis.com/zenn-user-upload/8cd563efbf69-20211126.png)
+
+`Azure` 
+-> `Azure App Service (Windows)` 
+-> (必要によっては Azure のサブスクリプションと紐づいてる MS アカウントでログインしてね)
+-> 該当する、事前に作っておいた App Service を選ぶ 
+
+
 
 publish (発行) しましょう
 
-![](https://storage.googleapis.com/zenn-user-upload/4pypqwiaohg2rcutdp4fp9ofgfam)
+![](https://storage.googleapis.com/zenn-user-upload/4257db5ee6fc-20211126.jpg)
 
 # 4: Teams と繋げる
 
 今までエミュレータでの実行でしたが、いよいよ Teams 上で動かしてみましょう。
 
-## 4-1: チャンネル登録
+## 4-0: Azure ポータル画面
+
+最初に作ったリソースグループの画面に行きましょう。
+そのリソースグループの下に作られているリソースの一覧を見ます
+
+![](https://storage.googleapis.com/zenn-user-upload/0a38c7f6840d-20211126.png)
+
+## 4-1: Azure Bot を作る
+
+このリソースグループの中に `Azure Bot` を作成します。
+まず `＋作成` をクリックします
+
+![](https://storage.googleapis.com/zenn-user-upload/bcf3ee6d5013-20211126.png)
+
+検索窓に `Azure Bot` と打ち込みます
+![](https://storage.googleapis.com/zenn-user-upload/7545745430db-20211126.png)
+
+`Azure Bot` 出てきましたね。
+`作成` を推します
+
+![](https://storage.googleapis.com/zenn-user-upload/135ca9bb5af4-20211126.png)
+
+## 4-1-a: Azure Bot の価格帯を無料版に
+
+デフォルトでは価格帯がスタンダードになっているので、無料版を指定します
+
+![](https://storage.googleapis.com/zenn-user-upload/ec5b66fb796f-20211126.png)
+
+参考）[Azure Bot Service の価格](https://azure.microsoft.com/ja-jp/pricing/details/bot-services/?WT.mc_id=spatial-8948-machiy#pricing)
+
+## 4-1-b: Microsoft App ID の項で
+
+Microsoft App ID の項で、アプリの種類を「ユーザー割り当て済みマネージド ID」にします。
+これにすると、Azure AD へのアプリ登録などをやらなくて済んで便利です
+
+![](https://storage.googleapis.com/zenn-user-upload/1fe9aa2e97c0-20211126.jpg)
+
+これで作成します
+
+## 4-1-c: Azure bot 作成完了。リソースグループに戻る
+
+作成が完了すると「デプロイが完了しました」と出ます。
+
+リソースグループに戻りましょう。
+
+現在のリソース一覧はこうなっています
+
+![](https://storage.googleapis.com/zenn-user-upload/b4ef39cb340a-20211126.png)
+
+`Azure Bot` と一緒に
+`Key Vault` (`キーコンテナ`) と `マネージド ID` が新規に作成されていますね。
+
+これらは「誰でも私の bot が使える状態」にならないように（たとえば「うちの会社の人だけのアクセスにする」など）の
+セキュアな認証などに必要なリソースです。
 
 
+## 4-2: マネージド ID を Web App にも割り当てる
 
-最初に作った `Web App Bot` のリソースに移動します。
+さっきのリソースグループのリソース一覧から
+Web App (App Service) のリソースをクリックしましょう。
+（私の場合 `app-211126-faqbot` って名前のリソース）
 
-![](https://storage.googleapis.com/zenn-user-upload/8hmdilvc6adcj01xrsrd8e0iefc0)
+1. 左側のメニューの `設定` のなかの `ID` をクリック
+2. 「`ユーザー割り当て済み`」を選択
+3. `追加`
 
-その左の「チャンネル」から「Microsoft Teams チャンネルを構成」をクリック。
+![](https://storage.googleapis.com/zenn-user-upload/225bd958eeb9-20211126.jpg)
 
-![](https://storage.googleapis.com/zenn-user-upload/mzpuzzrey1fhn17cyw3wod4bj72i)
+`Azure Bot` 作成時に作られた `マネージド ID` を選択します
 
-「保存」を押します。
-
-## 4-2: Microsoft App ID コピー
+![](https://storage.googleapis.com/zenn-user-upload/6ce7218c0f5d-20211126.jpg)
 
 また左のメニューの「`Configuration` (設定)」から
 `Microsoft App ID` をコピーします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/hkn29jgtzf8v150vda6zu24yswqz)
+
+## 4-3: Web App の構成のアプリケーション設定に必要情報を追加
+
+`Azure Bot` と `Web App` (App Service) (bot クライアントが載ってるところ) を繋げる作業をします。
+
+まず必要な情報をメモします。
+
+またリソースグループに戻り、
+リソース一覧から `Azure Bot` をクリック。
+（私の場合 `bot-211126-faqbot` って名前のリソース）
+
+![](https://storage.googleapis.com/zenn-user-upload/61d7c1b9754f-20211126.jpg)
+
+`Azure Bot` の `構成` ページの
+
+* Microsoft App ID
+* アプリ テナント ID
+
+の値をコピーしておきます。（メモ帳かどこかにコピペしておいてください）
+
+そしてさっきのリソースグループのリソース一覧から
+Web App (App Service) のリソースに戻ります。
+（私の場合 `app-211126-faqbot` って名前のリソース）
+
+![](https://storage.googleapis.com/zenn-user-upload/3bf86aa98812-20211126.jpg)
+
+`構成` -> `+ 新しいアプリケーション設定`
+
+以下の 4 つの情報を Web App の構成のアプリケーション設定に追加します
+
+＃|名前|値
+---|---|---
+1|MicrosoftAppType|`UserAssignedMSI`
+2|MicrosoftAppId|Microsoft App ID
+3|MicrosoftAppPassword|(空文字)
+4|MicrosoftAppTenantId|アプリ テナント ID
+
+設定した後は必ず `保存` を押しましょう。(私はいつもこれを忘れて「あれ～？更新されてないぞ」となる)
 
 ## 4-3: Teams bot 設定ファイル manifest.json
 
@@ -358,7 +462,7 @@ json で記述する、設定ファイルです。
 エクスプローラーで manifest.json, icon32x32.png, icon192x192.png を選択して右クリックから圧縮します。
 
 ![](https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.ap-northeast-1.amazonaws.com%2F0%2F24609%2F5adae526-9d29-59ac-9482-b9254c5c0d06.png?ixlib=rb-1.2.2&auto=format&gif-q=60&q=75&w=1400&fit=max&s=0f9e496cb65c269159e888f3afac3e95)
-（図：私が過去書いた記事『[【第4/5】Teams bot をローカル (Visual Studio 2019) で開発し、Azure で無料で動かす【その４：Teams に繋げてデバッグ編】](https://qiita.com/chomado/items/23c66a975e21265d99ae#4-3-teams-%E3%81%AB%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%82%A2%E3%83%97%E3%83%AA%E3%81%A8%E3%81%97%E3%81%A6%E7%99%BB%E9%8C%B2)』）
+（図：私が過去書いた記事『[【第4/5】Teams bot をローカル (Visual Studio 2022) で開発し、Azure で無料で動かす【その４：Teams に繋げてデバッグ編】](https://qiita.com/chomado/items/23c66a975e21265d99ae#4-3-teams-%E3%81%AB%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%82%A2%E3%83%97%E3%83%AA%E3%81%A8%E3%81%97%E3%81%A6%E7%99%BB%E9%8C%B2)』）
 
 ## 4-6: Teams にカスタムアプリとして登録
 
@@ -366,7 +470,7 @@ json で記述する、設定ファイルです。
 Teams を開いて左下の「カスタムアプリをアップロード」をクリックします。
 
 ![](https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.ap-northeast-1.amazonaws.com%2F0%2F24609%2F75714667-4307-0679-e311-91840a3c84f1.png?ixlib=rb-1.2.2&auto=format&gif-q=60&q=75&w=1400&fit=max&s=3de6c7bc4bb5ef73cb88997e83ef9fac)
-（図：私が過去書いた記事『[【第4/5】Teams bot をローカル (Visual Studio 2019) で開発し、Azure で無料で動かす【その４：Teams に繋げてデバッグ編】](https://qiita.com/chomado/items/23c66a975e21265d99ae#4-3-teams-%E3%81%AB%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%82%A2%E3%83%97%E3%83%AA%E3%81%A8%E3%81%97%E3%81%A6%E7%99%BB%E9%8C%B2)』）
+（図：私が過去書いた記事『[【第4/5】Teams bot をローカル (Visual Studio 2022) で開発し、Azure で無料で動かす【その４：Teams に繋げてデバッグ編】](https://qiita.com/chomado/items/23c66a975e21265d99ae#4-3-teams-%E3%81%AB%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%82%A2%E3%83%97%E3%83%AA%E3%81%A8%E3%81%97%E3%81%A6%E7%99%BB%E9%8C%B2)』）
 
 ![](https://storage.googleapis.com/zenn-user-upload/fy0ggmidmixkx79n6sp7zd8ydvjl)
 
