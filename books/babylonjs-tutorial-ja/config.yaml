@@ -1,7 +1,7 @@
 title: "Babylon.js 公式入門チュートリアル ざっくり和訳"
 summary: "Babylon.js の公式入門チュートリアルをざっくり和訳しました"
 topics: [BabylonJS, WebXR]
-published: false
+published: true
 price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
