@@ -1,5 +1,5 @@
 title: "Babylon.js 公式入門チュートリアル ざっくり和訳"
-summary: "Web ブラウザ上で(も) 3D モデルを作ったり動かせたりする JavaScript の WebGL ライブラリ Babylon.js の公式入門チュートリアルをざっくり和訳しました。(2022/3/31 時点で第 3 章まで。逐一 残りも公開していきます)"
+summary: "Web ブラウザ上で(も) 3D モデルを作ったり動かせたりする JavaScript の WebGL ライブラリ Babylon.js (バビロン ジェイ エス) の公式入門チュートリアルをざっくり和訳しました。(2022/4/03 時点で第 4 章まで。逐一 残りも公開していきます)"
 topics: [BabylonJS, WebXR, WebGL, JavaScript]
 published: true
 price: 0 # 有料の場合200〜5000
@@ -30,4 +30,6 @@ chapters:
   - 3-05
   - 3-06
   - 3-07
+  - 4-00
+  - 4-01
   - thankyou
