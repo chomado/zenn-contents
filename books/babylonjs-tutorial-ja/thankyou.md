@@ -29,3 +29,14 @@ title: "サンキューページ"
 お願いしたらご快諾いただきました。つよい
 
 https://twitter.com/hi_rom_/status/1439450865299955712
+
+## Pull Request 
+
+GitHub レポジトリにプルリクいただきありがとうございます！
+
+### 2022/04/09 セミコロン追加 PR
+
+OumeiSatoKenta さん、セミコロン追加の プルリクありがとうございます！
+2022/05/01 マージしました
+
+https://github.com/chomado/zenn-contents/pull/1
