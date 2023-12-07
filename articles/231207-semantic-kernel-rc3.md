@@ -72,40 +72,55 @@ using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 var builder = new KernelBuilder();
 
 builder.AddAzureOpenAIChatCompletion(
-        deploymentName: "gpt-35-turbo",                // Azure OpenAI Deployment Name
-        modelId: "gpt-35-turbo",                      // Azure OpenAI Model Name
-        endpoint: "https://openai-231207.openai.azure.com/", // Azure OpenAI Endpoint
+        deploymentName: "gpt-35-turbo",
+        modelId: "gpt-35-turbo",
+        endpoint: "https://openai-231207.openai.azure.com/",
         credentials: new DefaultAzureCredential()
-);      
+);
 
 var kernel = builder.Build();
 
 var prompt = @"{{$input}}
 
-One line TLDR with the fewest words.";
+なるべく短く要約してください。";
 
-var summarize = kernel.CreateFunctionFromPrompt(prompt, executionSettings: new OpenAIPromptExecutionSettings { MaxTokens = 100 });
+var summarize = kernel.CreateFunctionFromPrompt(
+    promptTemplate: prompt, 
+    executionSettings: new OpenAIPromptExecutionSettings { MaxTokens = 200 }
+);
 
 string text1 = @"
-1st Law of Thermodynamics - Energy cannot be created or destroyed.
-2nd Law of Thermodynamics - For a spontaneous process, the entropy of the universe increases.
-3rd Law of Thermodynamics - A perfect crystal at zero Kelvin has zero entropy.";
+吾輩は猫である。名前はまだ無い。
+どこで生れたかとんと見当がつかぬ。何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。
+吾輩はここで始めて人間というものを見た。
+しかもあとで聞くとそれは書生という人間中で一番獰悪な種族であったそうだ。
+この書生というのは時々我々を捕えて煮て食うという話である。
+しかしその当時は何という考もなかったから別段恐しいとも思わなかった。
+ただ彼の掌に載せられてスーと持ち上げられた時何だかフワフワした感じがあったばかりである。
+掌の上で少し落ちついて書生の顔を見たのがいわゆる人間というものの見始であろう。
+";
 
 string text2 = @"
-1. An object at rest remains at rest, and an object in motion remains in motion at constant speed and in a straight line unless acted on by an unbalanced force.
-2. The acceleration of an object depends on the mass of the object and the amount of force applied.
-3. Whenever one object exerts a force on another object, the second object exerts an equal and opposite on the first.";
+メロスは激怒した。必ず、かの邪智暴虐の王を除かなければならぬと決意した。
+メロスには政治がわからぬ。メロスは、村の牧人である。笛を吹き、羊と遊んで暮して来た。
+けれども邪悪に対しては、人一倍に敏感であった。
+きょう未明メロスは村を出発し、野を越え山越え、十里はなれた此このシラクスの市にやって来た。
+メロスには父も、母も無い。女房も無い。十六の、内気な妹と二人暮しだ。この妹は、村の或る律気な一牧人を、近々、花婿として迎える事になっていた。結婚式も間近かなのである。
+メロスは、それゆえ、花嫁の衣裳やら祝宴の御馳走やらを買いに、はるばる市にやって来たのだ。
+先ず、その品々を買い集め、それから都の大路をぶらぶら歩いた。メロスには竹馬の友があった。セリヌンティウスである。今は此のシラクスの市で、石工をしている。
+その友を、これから訪ねてみるつもりなのだ。久しく逢わなかったのだから、訪ねて行くのが楽しみである。
+";
+
+Console.WriteLine("----- text1 --------");
 
 Console.WriteLine(await kernel.InvokeAsync(summarize, new KernelArguments(text1)));
 
-Console.WriteLine(await kernel.InvokeAsync(summarize, new KernelArguments(text2)));
+Console.WriteLine("----- text2 --------");
 
-// Output:
-//   Energy conserved, entropy increases, zero entropy at 0K.
-//   Objects move in response to forces.
+Console.WriteLine(await kernel.InvokeAsync(summarize, new KernelArguments(text2)));
 ```
 
-:::message API キーべた書き版
+:::message 
 認証の点で、もし Azure ManagedID ではなく API キーべた書きが良い方は、以下のコードに差し替えてください。
 
 ```csharp
@@ -117,6 +132,18 @@ builder.AddAzureOpenAIChatCompletion(
 ); 
 ```
 :::
+
+### アウトプット例
+
+![](https://storage.googleapis.com/zenn-user-upload/08329d8e3685-20231207.png)
+
+```
+----- text1 --------
+猫である吾輩は、名前がまだない。生まれた場所や状況は覚えていないが、最初に人間を見たのは書生と呼ばれる獰悪な人間だった。当時は人間の恐ろしさについて考える余裕はなかったが、書生の手の上で落ち着いてから、人間というものを見始めた。
+----- text2 --------
+メロスは激怒し、邪智暴虐の王を倒すことを決意する。彼は政治には疎く、村の牧人であるが、邪悪には敏感だ。村を出てシラクスの市に向かい、妹の結婚のための品々を買い集める。そして、かつての友人である石工のセリヌンティウスを訪ねることを楽しみにしている。
+```
+
 
 ## 余談
 
