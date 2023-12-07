@@ -1,5 +1,5 @@
 ---
-title: "Semantic Kernel (RC-3 版) ハローワールド"
+title: "Semantic Kernel (RC-3 版) ハローワールドを日本語で動かす"
 emoji: "⛏️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [CSharp, Azure, OpenAI, SemanticKernel]
@@ -10,6 +10,19 @@ published: true
 日本語で動かします。
 
 https://github.com/microsoft/semantic-kernel/blob/main/dotnet/README.md
+
+:::message alert
+### 注意
+
+現在、Semantic Kernel は **破壊的変更バンバン出しながら** 日々アップデートされています。  
+
+なので、この書いたコードも、（今日の朝に出た最新版が反映されているのに）多分 **来週には動かなくなっている可能性** があります。（少なくとも NuGet で RC-3 を指定してれば動くけど）
+
+でも **鮮度が命** ということで書きました。  
+
+(stable 版が正式リリースされたらもっと丁寧な入門記事書きますね！)
+
+:::
 
 ## Azure OpenAI 側の準備
 
