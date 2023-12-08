@@ -30,11 +30,13 @@ https://mktoevents.com/Microsoft+Event/415522/157-GQE-382
 # セッションアジェンダ
 
 1. Azure OpenAI
-    * ポータル画面お見せする
 1. Semantic Kernel とは
-    * [Semantic Kernel の開発タスク一覧](https://github.com/orgs/microsoft/projects/866/views/57) をお見せする。現在 15-37 までが破壊的変更を含む可能性
-1. [デモ] .NET 8 + Semantic Kernel ハローワールド
-1. [デモ] Notebook サンプルを動かす
+1. [デモ] Semantic Kernel ハローワールド 
+  - とりあえず叩いてみる
+1. [デモ] Semantic Kernel chat bot
+  - ユーザとマルチターンで会話のできる chat bot
+1. [デモ] Notebook サンプル
+  - いろんなサンプルコードが見られます
 1. 各種サンプル紹介
     * [Semantic Kernel Bot in-a-box](https://github.com/Azure/AI-in-a-Box/tree/main/semantic-kernel-bot-in-a-box) (SK beta-8)
 1. まとめ
@@ -80,6 +82,7 @@ Semantic Kernel とは、
 * OpenAI, Azure OpenAI などの大規模言語モデル (LLM) 用のライブラリ。
 * Microsoft が中心となり OSS で開発
 
+https://github.com/microsoft/semantic-kernel
 
 ### 公式から引用
 
