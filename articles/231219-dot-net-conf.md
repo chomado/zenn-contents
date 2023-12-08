@@ -47,6 +47,30 @@ https://learn.microsoft.com/ja-jp/azure/ai-services/openai?WT.mc_id=dotnet-9827-
 > Azure OpenAI Service は、GPT-4、GPT-3.5-Turbo、Embeddings (埋め込み) モデル シリーズなど OpenAI の強力な言語モデルに、REST API でのアクセスを提供します。
 
 
+## データポリシー
+
+https://learn.microsoft.com/ja-jp/legal/cognitive-services/openai/data-privacy?WT.mc_id=dotnet-9827-machiy
+
+リクエストやレスポンスに含まれるデータは保存されることなく、(マイクロソフトや OpenAI などの) モデルの学習にも使用されることは無いし、もちろん他の客とかに見られることも無い、と明記されている
+
+
+:::message
+
+原文
+
+Your prompts (inputs) and completions (outputs), your embeddings, and your training data:
+
+* are NOT available to other customers.
+* are NOT available to OpenAI.
+* are NOT used to improve OpenAI models.
+* are NOT used to improve any Microsoft or 3rd party products or services.
+* are NOT used for automatically improving Azure OpenAI models for your use in your resource (The models are stateless, unless you explicitly fine-tune models with your training data).
+* Your fine-tuned Azure OpenAI models are available exclusively for your use.
+
+The Azure OpenAI Service is fully controlled by Microsoft; Microsoft hosts the OpenAI models in Microsoft’s Azure environment and the Service does NOT interact with any services operated by OpenAI (e.g. ChatGPT, or the OpenAI API).
+
+:::
+
 # Semantic Kernel とは
 
 Semantic Kernel とは、    
