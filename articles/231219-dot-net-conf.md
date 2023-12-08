@@ -32,11 +32,11 @@ https://mktoevents.com/Microsoft+Event/415522/157-GQE-382
 1. Azure OpenAI
 1. Semantic Kernel とは
 1. [デモ] Semantic Kernel ハローワールド 
-  - とりあえず叩いてみる
+    1. とりあえず叩いてみる
 1. [デモ] Semantic Kernel chat bot
-  - ユーザとマルチターンで会話のできる chat bot
+    1. ユーザとマルチターンで会話のできる chat bot
 1. [デモ] Notebook サンプル
-  - いろんなサンプルコードが見られます
+    1. いろんなサンプルコードが見られます
 1. 各種サンプル紹介
     * [Semantic Kernel Bot in-a-box](https://github.com/Azure/AI-in-a-Box/tree/main/semantic-kernel-bot-in-a-box) (SK beta-8)
 1. まとめ
