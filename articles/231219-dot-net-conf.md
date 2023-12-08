@@ -9,6 +9,8 @@ published: true
 2023/12/19(火) に **.NET Conf 2023 Recap Japan** オンラインイベントが開催され、  
 私も「.NET (C#) + Azure OpenAI」についてお話しします。
 
+https://mktoevents.com/Microsoft+Event/415522/157-GQE-382
+
 その補足記事です。
 
 ![](https://storage.googleapis.com/zenn-user-upload/3451058409dd-20231208.png)
