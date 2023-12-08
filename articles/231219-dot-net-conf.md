@@ -268,10 +268,12 @@ https://github.com/microsoft/semantic-kernel/pull/4077/commits/9efda6b4c4dba57c7
 
 ### 必要なもの
 
-* VSCode に Polyglot 拡張機能を入れる
+* VSCode に Polyglot Notebooks 拡張機能を入れる
   - Notebook で C# を動かすのに必要
 * Azure OpenAI で API キー取得済み
   - (OpenAI 本家でも動くけど今回のデモは Azure でやります)
+
+https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.dotnet-interactive-vscode
 
 # おすすめサンプル集
 
