@@ -69,9 +69,10 @@ while (true)
     // Console.WriteLine(history);
 }
 
-```
-
 ## 実行結果例
+
+```
+![](https://storage.googleapis.com/zenn-user-upload/e12c5af245a8-20231208.png)
 
 あなた: こんにちは。おすすめの本を探しています。
 
