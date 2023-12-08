@@ -1,5 +1,5 @@
 ---
-title: "VSCode に Semantic Kernel E拡張機能を導入する"
+title: "VSCode に Semantic Kernel 拡張機能を導入する"
 emoji: "🐈"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [SemanticKernel, VSCode]
