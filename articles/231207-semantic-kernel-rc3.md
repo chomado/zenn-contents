@@ -87,7 +87,7 @@ var builder = new KernelBuilder();
 builder.AddAzureOpenAIChatCompletion(
         deploymentName: "gpt-35-turbo",
         modelId: "gpt-35-turbo",
-        endpoint: "https://openai-231207.openai.azure.com/",
+        endpoint: "https://エンドポイント.openai.azure.com/",
         credentials: new DefaultAzureCredential()
 );
 
