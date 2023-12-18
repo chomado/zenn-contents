@@ -94,14 +94,17 @@ https://github.com/microsoft/semantic-kernel
 
 日付|バージョン|URL
 ---|---|---
-23/11/10|dotnet-1.0.0-beta6|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-beta6)
-23/11/16|dotnet-1.0.0-beta7|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-beta7)
-23/11/17|dotnet-1.0.0-beta8|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-beta8)
-23/12/05|dotnet-1.0.0-rc1|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-rc1)
-23/12/06|dotnet-1.0.0-rc2|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-rc2)
-23/12/07|dotnet-1.0.0-rc3|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-rc3)
+11/10(金)|dotnet-1.0.0-beta6|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-beta6)
+11/16(木)|dotnet-1.0.0-beta7|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-beta7)
+11/17(金)|dotnet-1.0.0-beta8|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-beta8)
+12/05(火)|dotnet-1.0.0-rc1|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-rc1)
+12/06(水)|dotnet-1.0.0-rc2|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-rc2)
+12/07(木)|dotnet-1.0.0-rc3|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-rc3)
+12/08(金)|(セッション収録日)|
+12/14(木)|dotnet-1.0.0-rc4|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-rc4)
+12/19(火)|(イベント開催日)|
 
-↑ セッション収録日 (12/08) の１週間で毎日更新されるの本当に運が…
+↑ セッション収録日 (12/08) の１週間で毎日更新されたの本当に運が…
 
 
 ## 使い方
