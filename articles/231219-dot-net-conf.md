@@ -27,6 +27,13 @@ https://mktoevents.com/Microsoft+Event/415522/157-GQE-382
 
 この記事では 2023/12/19(火) 時点での最新の情報を書いておくように更新し続けます。
 
+:::message
+追記： 2023/12/19(火)
+
+予想通り、あの後 RC-4 (Release Candidate 4) 版が出て、既存のコードが動かなくなりましたので、この記事を更新しました。   
+この記事は現在 RC-4 版に対応しています
+:::
+
 # セッションアジェンダ
 
 1. Azure OpenAI
@@ -107,7 +114,7 @@ https://github.com/microsoft/semantic-kernel
 ↑ セッション収録日 (12/08) の１週間で毎日更新されたの本当に運が…
 
 
-## 使い方
+## 使い方 (RC-4 版)
 
 インラインで書いたプラグインを使う例です。
 
@@ -120,13 +127,11 @@ https://github.com/microsoft/semantic-kernel
 ↓ Azure OpenAI で GPT-3.5 turbo のモデルをたたく場合。認証には Azure の Managed ID を使用
 
 ```csharp
-using Azure;
 using Azure.Identity;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 
 // Kernel builder を作る
-var builder = new KernelBuilder();
+var builder = Kernel.CreateBuilder();
 
 // kernel が使う AI モデル情報,認証情報などを登録
 builder.AddAzureOpenAIChatCompletion(
@@ -138,6 +143,10 @@ builder.AddAzureOpenAIChatCompletion(
 
 var kernel = builder.Build();
 ```
+
+足りてないと怒られている `Azure.Identity` のパッケージは以下のようにもインストールすることができます。（`ctrl + .` から）
+
+![](https://storage.googleapis.com/zenn-user-upload/7e2d5344d832-20231219.png)
 
 :::message
 認証の点で、もし Azure ManagedID ではなく API キーべた書きが良い方は、以下のコードに差し替えてください
@@ -158,6 +167,20 @@ builder.AddOpenAIChatCompletion(
     "gpt-3.5-turbo",  // OpenAI Model name
     "APIキー");       // OpenAI API Key
 ```
+:::
+
+:::message alert
+RC3 時点での書き方は
+```csharp
+var builder = new KernelBuilder();
+```
+だったので、.NET Conf Recap Japan イベントではこのように書いていますが、   
+RC4 版だと動きません。   
+本文中に書いたように   
+```csharp
+var builder = Kernel.CreateBuilder();
+```
+としてください。
 :::
 
 ### 02. プロンプト登録
