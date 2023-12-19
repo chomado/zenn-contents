@@ -1,28 +1,24 @@
 ---
-title: "Semantic Kernel (RC-3 版) ハローワールドを日本語で動かす"
+title: "Semantic Kernel (正式版 v1.0.1) ハローワールドを日本語で動かす"
 emoji: "⛏️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [CSharp, Azure, OpenAI, SemanticKernel]
 published: true
 ---
 公式ドキュメントのハローワールドを  
-(今日 2023/12/07 現在の) 最新版 ([今日リリースされたばかりの RC-3](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-rc3)) で  
+(今日 2023/12/19(金) 現在の) 最新版 ([今日リリースされたばかりの 正式版 v1.0.1](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.1)) で  
 日本語で動かします。
+
+:::message
+追記：12/19(金)   
+この記事はもともと 12/07(木) に RC-3 版が出た当日に RC-3 版で書いたもの（なので URL に rc3 と入っている）でしたが、     
+今日 12/19(金) に正式版がリリースされたので、そちらでアップデートして書き直しております。
+:::
+
+↓ 動かすコード:公式ドキュメント（12/19 現在、ドキュメントが古いままでこれ↓だと動かない（そのうち更新されると思う（まあ更新されたらこの記事の存在意義消えるけど、、、）））
 
 https://github.com/microsoft/semantic-kernel/blob/main/dotnet/README.md
 
-:::message alert
-### 注意
-
-現在、Semantic Kernel は **破壊的変更バンバン出しながら** 日々アップデートされています。  
-
-なので、この書いたコードも、（今日の朝に出た最新版が反映されているのに）多分 **来週には動かなくなっている可能性** があります。（少なくとも NuGet で RC-3 を指定してれば動くけど）
-
-でも **鮮度が命** ということで書きました。  
-
-(stable 版が正式リリースされたらもっと丁寧な入門記事書きますね！)
-
-:::
 
 ## Azure OpenAI 側の準備
 
@@ -59,7 +55,7 @@ Azure OpenAI リソースの「アクセス制御 (IAM)」を開きます。
 CLI
 
 ```shell
-dotnet add package Microsoft.SemanticKernel --prerelease
+dotnet add package Microsoft.SemanticKernel
 ```
 
 画面でやる場合は、プロジェクト名右クリックで「Manage NuGet packages」、
@@ -67,7 +63,7 @@ dotnet add package Microsoft.SemanticKernel --prerelease
 `SemanticKernel` で検索、
 「install」クリック
 
-![](https://storage.googleapis.com/zenn-user-upload/9342f8c5234d-20231207.png)
+![](https://storage.googleapis.com/zenn-user-upload/d769af1f6a0f-20231219.png)
 
 ## 入力したパラメータを含んだプロンプト実行
 
@@ -77,12 +73,11 @@ RC3 で動く版はこちらでお願いします。
 （[この修正プルリク](https://github.com/microsoft/semantic-kernel/pull/4077/commits/9f600b37d01fffc71f39ae7fb207bdf13772f1dc)がマージされたら公式ドキュメントのコード動くようになります）
 
 ```csharp
-using Azure;
 using Azure.Identity;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 
-var builder = new KernelBuilder();
+var builder = Kernel.CreateBuilder();
 
 builder.AddAzureOpenAIChatCompletion(
         deploymentName: "gpt-35-turbo",
@@ -126,11 +121,11 @@ string text2 = @"
 
 Console.WriteLine("----- text1 --------");
 
-Console.WriteLine(await kernel.InvokeAsync(summarize, new KernelArguments(text1)));
+Console.WriteLine(await kernel.InvokeAsync(summarize, new KernelArguments() { ["input"] = text1 }));
 
 Console.WriteLine("----- text2 --------");
 
-Console.WriteLine(await kernel.InvokeAsync(summarize, new KernelArguments(text2)));
+Console.WriteLine(await kernel.InvokeAsync(summarize, new KernelArguments() { ["input"] = text2 }));
 ```
 
 :::message 
