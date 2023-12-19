@@ -38,6 +38,8 @@ https://mktoevents.com/Microsoft+Event/415522/157-GQE-382
 この記事は現在 最新の正式版に対応しています (イベント当日の朝に更新) (がんばりました…！)
 :::
 
+![](https://storage.googleapis.com/zenn-user-upload/22c6edd25df5-20231219.png)
+
 # セッションアジェンダ
 
 1. Azure OpenAI
@@ -54,6 +56,8 @@ https://mktoevents.com/Microsoft+Event/415522/157-GQE-382
     * V1.0.0 正式リリースされたらぜひ使ってみてくださいね！
 
 # Azure OpenAI
+
+![](https://storage.googleapis.com/zenn-user-upload/f4902c11e28b-20231219.png)
 
 公式ドキュメント
 
@@ -100,6 +104,11 @@ https://github.com/microsoft/semantic-kernel
 > Semantic Kernel is an SDK that integrates Large Language Models (LLMs) like OpenAI, Azure OpenAI, and Hugging Face with conventional programming languages like C#, Python, and Java. Semantic Kernel achieves this by allowing you to define plugins that can be chained together in just a few lines of code.
 
 https://github.com/microsoft/semantic-kernel
+
+
+![](https://storage.googleapis.com/zenn-user-upload/1e827c8511a2-20231219.png)
+
+![](https://storage.googleapis.com/zenn-user-upload/5bb0c8b73eac-20231219.png)
 
 ## Semantic Kernel バージョン履歴 (.NET 版)
 
