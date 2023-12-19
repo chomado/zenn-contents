@@ -4,6 +4,7 @@ emoji: "🤖"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [SemanticKernel, CSharp, Azure]
 published: true
+publication_name: "microsoft"
 ---
 
 2023/12/19(火) に **.NET Conf 2023 Recap Japan** オンラインイベントが開催され、  
