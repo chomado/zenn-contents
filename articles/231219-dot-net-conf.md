@@ -123,7 +123,11 @@ https://github.com/microsoft/semantic-kernel
 
 インラインで書いたプラグインを使う例です。
 
-前提：プロジェクトに、NuGet で Semantic Kernel のパッケージをインストールします。
+前提：
+
+* プロジェクトに、NuGet で Semantic Kernel のパッケージをインストールします。
+* Azure OpenAI サービスに GPT-3.5 Turbo のモデルをデプロイしておく
+* Azure CLI インストール済み (認証に必要)
 
 ### 01. kernel インスタンス構築
 
@@ -266,6 +270,12 @@ var summaryResult = await kernel.InvokeAsync(
 としてください。
 :::
 
+### 動かしてみた記事
+
+なんと当日中（というかセッション中）に、ymd65536 さんが実際に上記のデモを動かしてくださいました！ありがとうございます！
+Azure CLI が入ってなかったなど、つまずきポイントも書いてくださっています
+
+https://zenn.dev/ymd65536/scraps/608eeaf9e8b652
 
 ## v1.0 正式リリースに向け絶賛開発中
 
