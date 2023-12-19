@@ -116,7 +116,7 @@ https://github.com/microsoft/semantic-kernel
 12/19(火)|dotnet-1.0.1 [正式版]|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.1)
 
 ↑ セッション収録日 (12/08) の１週間で毎日更新されたの本当に運が…   
-↑ (追記) イベント当日に正式版リリースされたの本当に運が…（当日朝にこの記事更新対応）
+↑ (追記) イベント (放送日) 当日に正式版リリースされたの本当に運が…（当日朝にこの記事更新対応）
 
 
 ## 使い方 (正式版 v1.0.1)
