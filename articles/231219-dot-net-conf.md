@@ -293,12 +293,21 @@ Azure 側の設定も書いたらちょっと長くなったので別記事に�
 
 https://zenn.dev/chomado/articles/231207-semantic-kernel-rc3
 
+:::message
+追記： 2023/12/19(火)
+↑ 正式版 v1.0.1 に対応しました
+:::
 
 # [デモ] Semantic Kernel chat bot
 
 ちょっと長くなったので別記事に書きました。
 
 https://zenn.dev/chomado/articles/231208-chatbot-semantic-kernel-rc3
+
+:::message
+追記： 2023/12/19(火)
+↑ 正式版 v1.0.1 に対応しました
+:::
 
 # [デモ] Semantic Kernel Notebook
 
@@ -308,12 +317,12 @@ https://github.com/microsoft/semantic-kernel/tree/main/dotnet/notebooks
 
 ### ちなみに：バージョンについて
 
-Beta-6 版 (11/10 にリリース) で作られているのですが、   
+RC-4 版 (12/14 にリリース) で作られているのですが、   
 基本的な動作は変わらないので、勉強には変わらず良い教材だと思われます。
 
-ちなみに もしこの pull request (Update notebooks to use RC version) が merge されたら RC-3 対応されます
+![](https://storage.googleapis.com/zenn-user-upload/5982645dd849-20231219.png)
 
-https://github.com/microsoft/semantic-kernel/pull/4077/commits/9efda6b4c4dba57c7c5eb88331659a9febcd30e1
+(ちなみにセッション収録した 12/8(金) の時点では Beta-6 版で動いていました。ちゃんとあれからアプデされてるんですね)
 
 ### 必要なもの
 
