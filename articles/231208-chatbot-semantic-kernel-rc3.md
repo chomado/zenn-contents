@@ -1,5 +1,5 @@
 ---
-title: "Semantic Kernel (RC-3) + GPT 3.5 turbo で chat bot"
+title: "Semantic Kernel (正式版 v1.0.1) + GPT 3.5 turbo で chat bot"
 emoji: "💻"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [SemanticKernel, CSharp]
@@ -9,18 +9,24 @@ published: true
 Azure OpenAI では GPT 4 turbo も使えるのですが、   
 今回は (お金をケチって) GPT 3.5 turbo を使用しています。
 
-Semantic Kernel は 2023/12/08 現在最新の RC-3 を使用しています。   
+Semantic Kernel は 2023/12/19 現在最新の 正式版 v1.0.1 を使用しています。   
 今までのコードが（破壊的変更により）コンパイルエラー祭りで動かなくなったので、最新版で動くやつを書きました。
 
 また、認証は（API キーではなく）Azure Managed ID を使用しています
 
+:::message
+追記：12/19(金)   
+この記事はもともと 12/07(木) に RC-3 版が出た当日に RC-3 版で書いたもの（なので URL に rc3 と入っている）でしたが、     
+今日 12/19(金) に正式版がリリースされたので、そちらでアップデートして書き直しております。
+:::
+
 ```csharp
-using Azure;
 using Azure.Identity;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 
-var builder = new KernelBuilder();
+// Kernel builder を作る
+var builder = Kernel.CreateBuilder();
 
 builder.AddAzureOpenAIChatCompletion(
         deploymentName: "gpt-35-turbo",
@@ -69,9 +75,10 @@ while (true)
     // Console.WriteLine(history);
 }
 
+```
+
 ## 実行結果例
 
-```
 ![](https://storage.googleapis.com/zenn-user-upload/e12c5af245a8-20231208.png)
 
 あなた: こんにちは。おすすめの本を探しています。
