@@ -30,8 +30,11 @@ https://mktoevents.com/Microsoft+Event/415522/157-GQE-382
 :::message
 追記： 2023/12/19(火)
 
-予想通り、あの後 RC-4 (Release Candidate 4) 版が出て、既存のコードが動かなくなりましたので、この記事を更新しました。   
-この記事は現在 RC-4 版に対応しています
+予想通り、あの後   
+次の週に RC-4 (Release Candidate 4) 版、   
+さらに今日 12/19(金) 当日（！）に [正式版 v1.0.1](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.1)が出て、   
+完全に既存のコードが動かなくなりましたので、この記事を更新しました。    
+この記事は現在 最新の正式版に対応しています (イベント当日の朝に更新)
 :::
 
 # セッションアジェンダ
@@ -110,11 +113,13 @@ https://github.com/microsoft/semantic-kernel
 12/08(金)|(セッション収録日)|
 12/14(木)|dotnet-1.0.0-rc4|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.0-rc4)
 12/19(火)|(イベント開催日)|
+12/19(火)|dotnet-1.0.1 [正式版]|[GitHub](https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.1)
 
-↑ セッション収録日 (12/08) の１週間で毎日更新されたの本当に運が…
+↑ セッション収録日 (12/08) の１週間で毎日更新されたの本当に運が…   
+↑ (追記) イベント当日に正式版リリースされたの本当に運が…（当日朝にこの記事更新対応）
 
 
-## 使い方 (RC-4 版)
+## 使い方 (正式版 v1.0.1)
 
 インラインで書いたプラグインを使う例です。
 
@@ -175,7 +180,7 @@ RC3 時点での書き方は
 var builder = new KernelBuilder();
 ```
 だったので、.NET Conf Recap Japan イベントではこのように書いていますが、   
-RC4 版だと動きません。   
+正式版 v1.0.1 だと動きません。   
 本文中に書いたように   
 ```csharp
 var builder = Kernel.CreateBuilder();
@@ -204,25 +209,6 @@ var executionSettings = new OpenAIPromptExecutionSettings
 };
 ```
 
-プロンプトテンプレートの設定をします。
-
-```csharp
-var promptTemplateConfig = new PromptTemplateConfig(skPrompt);
-
-var promptTemplateFactory = new KernelPromptTemplateFactory();
-var promptTemplate = promptTemplateFactory.Create(promptTemplateConfig);
-
-var renderedPrompt = await promptTemplate.RenderAsync(kernel);
-
-Console.WriteLine(renderedPrompt);
-```
-
-上記のプロンプトテンプレートを、kernel が実行できる形式の function に変換しましょう。
-
-```csharp
-var summaryFunction = kernel.CreateFunctionFromPrompt(skPrompt, executionSettings);
-```
-
 ### 03. 実行してみる
 
 サンプル入力
@@ -243,7 +229,10 @@ var input = """
 実行します
 
 ```csharp
-var summaryResult = await kernel.InvokeAsync(summaryFunction, new KernelArguments(input));
+var summaryResult = await kernel.InvokeAsync(
+    summaryFunction, 
+    new KernelArguments() { ["input"] = input }
+);
 
 Console.WriteLine(summaryResult);
 ```
@@ -251,6 +240,27 @@ Console.WriteLine(summaryResult);
 出力例）
 
 > 猫の吾輩は、どこで生まれたかはわからないが、薄暗い場所で泣いていた記憶がある。初めて人間を見たのは書生という獰悪な人間で、煮て食うという話もあったが、当時は恐ろしいとは思わなかった。
+
+
+:::message alert
+RC3 時点での書き方は
+```csharp
+var summaryResult = await kernel.InvokeAsync(
+    summaryFunction, 
+    new KernelArguments(input)
+);
+```
+だったので、.NET Conf Recap Japan イベントではこのように書いていますが、   
+最新の正式版 v1.01 だと動きません。   
+本文中に書いたように   
+```csharp
+var summaryResult = await kernel.InvokeAsync(
+    summaryFunction, 
+    new KernelArguments() { ["input"] = input }
+);
+```
+としてください。
+:::
 
 
 ## v1.0 正式リリースに向け絶賛開発中
@@ -262,6 +272,15 @@ https://github.com/orgs/microsoft/projects/866/views/57
 ![](https://storage.googleapis.com/zenn-user-upload/8a61dcabd729-20231208.png)
 
 ↑ 2023/12/08 15:20 現在 (RC-3 版) 、No.15 - No.37 までが「破壊的変更を含む可能性」のある変更点。正式リリースまでに破壊的変更が多分に含まれそう…
+
+
+:::message
+追記： 2023/12/19(火)
+
+(日本時間) 12/19(火) 朝に正式版リリースされました   
+
+https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.0.1
+:::
 
 
 # [デモ] Semantic Kernel ハローワールド
