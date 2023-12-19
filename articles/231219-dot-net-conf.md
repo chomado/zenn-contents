@@ -177,12 +177,14 @@ builder.AddOpenAIChatCompletion(
 :::message alert
 RC3 時点での書き方は
 ```csharp
+// 古い
 var builder = new KernelBuilder();
 ```
 だったので、.NET Conf Recap Japan イベントではこのように書いていますが、   
 正式版 v1.0.1 だと動きません。   
 本文中に書いたように   
 ```csharp
+// 新しい
 var builder = Kernel.CreateBuilder();
 ```
 としてください。
@@ -245,6 +247,7 @@ Console.WriteLine(summaryResult);
 :::message alert
 RC3 時点での書き方は
 ```csharp
+// 古い
 var summaryResult = await kernel.InvokeAsync(
     summaryFunction, 
     new KernelArguments(input)
@@ -254,6 +257,7 @@ var summaryResult = await kernel.InvokeAsync(
 最新の正式版 v1.01 だと動きません。   
 本文中に書いたように   
 ```csharp
+// 新しい
 var summaryResult = await kernel.InvokeAsync(
     summaryFunction, 
     new KernelArguments() { ["input"] = input }
