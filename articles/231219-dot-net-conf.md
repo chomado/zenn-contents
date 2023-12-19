@@ -38,6 +38,8 @@ https://mktoevents.com/Microsoft+Event/415522/157-GQE-382
 この記事は現在 最新の正式版に対応しています (イベント当日の朝に更新) (がんばりました…！)
 :::
 
+![](https://storage.googleapis.com/zenn-user-upload/66f81895ed61-20231219.png)
+
 # セッションアジェンダ
 
 1. Azure OpenAI
