@@ -74,7 +74,8 @@ https://msevents.microsoft.com/event?id=52809505429
 
 ## スライド
 
-[ TODO: あとでスライド埋め込む]
+https://www.docswell.com/s/chomado/5QXD47-2025-12-11-dotnet
+
 
 ## 1. Visual Studio 2026
 
